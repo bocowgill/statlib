@@ -39,6 +39,21 @@ def contrast [Sub Value]
     response.contrast intervention₁ intervention₀ unit =
       response intervention₁ unit - response intervention₀ unit := rfl
 
+/-- A unit's contrast with itself is zero. -/
+theorem contrast_self [AddGroup Value]
+    (response : PotentialResponse Intervention Unit Value)
+    (intervention : Intervention) (unit : Unit) :
+    response.contrast intervention intervention unit = 0 := by
+  simp
+
+/-- Swapping the interventions negates the unit-level contrast. -/
+theorem contrast_swap [AddGroup Value]
+    (response : PotentialResponse Intervention Unit Value)
+    (intervention₁ intervention₀ : Intervention) (unit : Unit) :
+    response.contrast intervention₁ intervention₀ unit =
+      -response.contrast intervention₀ intervention₁ unit := by
+  simp only [contrast_apply, neg_sub]
+
 /-- The average unit-level contrast over a finite population.
 
 This is zero when the population is empty, following the convention for `Finset.expect`.
