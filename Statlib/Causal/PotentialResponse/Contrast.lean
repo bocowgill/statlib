@@ -25,7 +25,10 @@ namespace PotentialResponse
 
 variable {Intervention Unit Value : Type*}
 
-/-- The unit-level contrast between two interventions, first minus second. -/
+/-- The unit-level contrast between two interventions, first minus second.
+
+The definition needs only `Sub Value`; laws involving zero and negation use `AddGroup Value`.
+-/
 def contrast [Sub Value]
     (response : PotentialResponse Intervention Unit Value)
     (intervention₁ intervention₀ : Intervention) :
@@ -56,7 +59,17 @@ theorem contrast_swap [AddGroup Value]
 
 /-- The average unit-level contrast over a finite population.
 
-This is zero when the population is empty, following the convention for `Finset.expect`.
+The elements of `Unit` are the entire finite target population. The notation `𝔼` denotes the
+uniform `Finset.expect` over `Finset.univ`, giving every unit equal weight. It introduces no
+probability distribution, random sampling, or superpopulation expectation.
+
+For empty `Unit`, this is zero by an algebraic convention of `Finset.expect`, not a substantive
+claim about the causal effect in an empty population.
+
+When the interventions encode two unit-level treatments, this is the conventional
+finite-population average treatment effect. If they encode complete allocation vectors, it is
+instead an average contrast between two allocation regimes; this definition does not assume
+noninterference.
 -/
 def finitePopulationAverageContrast
     [Fintype Unit]
